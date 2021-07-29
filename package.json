@@ -1,0 +1,41 @@
+{
+  "name": "movies-explorer-api",
+  "version": "1.0.0",
+  "description": "Бэкенд к дипломному проекту",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "lint": "npx eslint .",
+    "lint:fix": "eslint --fix --ext .js,.jsx ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Milanka-m/movies-explorer-api.git"
+  },
+  "author": "Milana_Birulia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Milanka-m/movies-explorer-api/issues"
+  },
+  "homepage": "https://github.com/Milanka-m/movies-explorer-api#readme",
+  "devDependencies": {
+    "eslint": "^7.31.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.23.4",
+    "express-winston": "^4.1.0",
+    "helmet": "^4.6.0",
+    "nodemon": "^2.0.12",
+    "winston": "^3.3.3"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
+    "celebrate": "^15.0.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.13.3",
+    "validator": "^13.6.0"
+  }
+}
