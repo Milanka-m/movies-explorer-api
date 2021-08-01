@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
 const UnauthorizedError = require('../errors/unauthorized-err');
 
-const { NODE_ENV, JWT_SECRET } = process.env;
+const { JWT_KEY } = require('../utils/config');
+const { AUTH_PERMISSION } = require('../utils/messageConstant');
 
 module.exports = (req, res, next) => {
   // достаём авторизационный заголовок
@@ -9,7 +10,7 @@ module.exports = (req, res, next) => {
 
   // убеждаемся, что он есть или начинается с Bearer
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    throw new UnauthorizedError('Необходима авторизация');
+    throw new UnauthorizedError(AUTH_PERMISSION);
   }
 
   // извлечём токен
@@ -18,10 +19,10 @@ module.exports = (req, res, next) => {
 
   try {
     // попытаемся верифицировать токен
-    payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
+    payload = jwt.verify(token, JWT_KEY);
   } catch (err) {
     if (!payload) {
-      throw new UnauthorizedError('Необходима авторизация');
+      throw new UnauthorizedError(AUTH_PERMISSION);
     }
   }
 

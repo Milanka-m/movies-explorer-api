@@ -4,6 +4,9 @@ const Movie = require('../models/movie');
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-err');
 const ForbiddenError = require('../errors/forbidden-err');
+const {
+  NOT_FOUND_MOVIE, BAD_REQUESTS_MOVIE, FORBIDDEN_DELETE_MOVIE, DELETE_MOVIE,
+} = require('../utils/messageConstant');
 
 module.exports = {
 
@@ -18,6 +21,7 @@ module.exports = {
   createMovie(req, res, next) {
     const owner = req.user._id;
     const {
+      movieId,
       country,
       director,
       duration,
@@ -31,6 +35,7 @@ module.exports = {
     } = req.body;
     // создаем фильм
     Movie.create({
+      movieId,
       country,
       director,
       duration,
@@ -46,24 +51,9 @@ module.exports = {
       // если ответ успешный, на сервер отправиться объект movie
       .then((movie) => {
         if (!movie) {
-          throw new BadRequestError('Переданы некорректные данные в методы создания фильма');
+          throw new BadRequestError(BAD_REQUESTS_MOVIE);
         }
-        res.send({
-          movie: {
-            movieId: movie._id,
-            country,
-            director,
-            duration,
-            year,
-            description,
-            image,
-            trailer,
-            thumbnail,
-            nameRU,
-            nameEN,
-            owner,
-          },
-        });
+        res.send({ movie });
       })
       // если ответ не успешный, отправим на сервер ошибку
       .catch(next);
@@ -71,17 +61,20 @@ module.exports = {
 
   removeMovie(req, res, next) {
     // параметром передадим только id
-    Movie.findById(req.params.movieId)
+    Movie.findById(req.params.id)
       .then((movie) => {
         if (!movie) {
-          throw new NotFoundError('Фильм по указанному _id не найден');
+          throw new NotFoundError(NOT_FOUND_MOVIE);
         }
         if (String(movie.owner) !== req.user._id) {
-          throw new ForbiddenError('Недостаточно прав для удаления фильма');
+          throw new ForbiddenError(FORBIDDEN_DELETE_MOVIE);
         }
         Movie.deleteOne({ _id: movie._id })
           .then(() => {
-            res.send({ movie });
+            res.send({
+              message: DELETE_MOVIE,
+              movie,
+            });
           })
           .catch(next);
       })

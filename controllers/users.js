@@ -6,6 +6,9 @@ const opts = { runValidators: true, new: true };
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-err');
 const ConflictError = require('../errors/conflict-err');
+const {
+  NOT_FOUND_USER, USER_NOT_UNIQUE, BAD_REQUESTS_USER, CREATE_USER,
+} = require('../utils/messageConstant');
 
 module.exports = {
   // контроллер для получения профильных данных
@@ -13,7 +16,7 @@ module.exports = {
     User.findById(req.user._id)
       .then((user) => {
         if (!user) {
-          throw new NotFoundError('Пользователь по указанному _id не найден');
+          throw new NotFoundError(NOT_FOUND_USER);
         }
         res.send({ user });
       })
@@ -33,7 +36,7 @@ module.exports = {
       const candidate = await User.findOne({ email });
       // если есть такой кандидат надо вернуть ошибку
       if (candidate) {
-        throw new ConflictError('Пользователь с таким email уже существует на сервере');
+        throw new ConflictError(USER_NOT_UNIQUE);
       }
 
       // хешируем пароль
@@ -51,7 +54,7 @@ module.exports = {
 
       // если ответ успешный, на сервер отправиться объект user
       return res.send({
-        message: 'Пользователь был успешно создан',
+        message: CREATE_USER,
         user: {
           _id: user._id,
           email: user.email,
@@ -60,7 +63,7 @@ module.exports = {
       });
     } catch (err) {
       if (err.name === 'ValidationError') {
-        throw new BadRequestError('Переданы некорректные данные в методы создания пользователя');
+        throw new BadRequestError(BAD_REQUESTS_USER);
       }
       next(err);
     }
@@ -81,7 +84,7 @@ module.exports = {
       // если ответ не успешный, отправим на сервер ошибку
       .catch((err) => {
         if (err.name === 'ValidationError') {
-          throw new BadRequestError('Переданы некорректные данные в методы создания пользователя');
+          throw new BadRequestError(BAD_REQUESTS_USER);
         }
       })
       .catch(next);

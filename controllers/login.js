@@ -2,12 +2,13 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const UnauthorizedError = require('../errors/unauthorized-err');
+const { AUTH_BAD_EMAIL, AUTH_BAD_PASS } = require('../utils/messageConstant');
 
-const { NODE_ENV, JWT_SECRET } = process.env;
+const { JWT_KEY } = require('../utils/config');
 // функция, которая генерирует токен, принимает id пользователя
 const generateAccessToken = (_id) => {
   const payload = { _id };
-  return jwt.sign(payload, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', {
+  return jwt.sign(payload, JWT_KEY, {
     expiresIn: '7d',
   });
 };
@@ -21,13 +22,13 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       // если не найден такой пользователь надо вернуть ошибку
       if (!user) {
-        throw new UnauthorizedError('Такого пользователя не существует');
+        throw new UnauthorizedError(AUTH_BAD_EMAIL);
       }
       // проверяем пароль на корректность, передаем параметры (пароль и захешированный пароль)
       const isPasswordCorrect = bcrypt.compareSync(password, user.password);
       // если пароль некорректен вернем ошибку
       if (!isPasswordCorrect) {
-        throw new UnauthorizedError('Введенный логин или пароль некорректен');
+        throw new UnauthorizedError(AUTH_BAD_PASS);
       }
 
       // возвращаем jwt

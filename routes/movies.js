@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 
-// импортируем методы контроллера cards
+// импортируем методы контроллера movies
 const {
   findMovies,
   createMovie,
@@ -14,6 +14,7 @@ router.get('/', findMovies);
 // роутер записи (создания объекта) фильма
 router.post('/', celebrate({
   body: Joi.object().keys({
+    movieId: Joi.number().required().min(1),
     country: Joi.string().required().min(2).max(30),
     director: Joi.string().required().min(2).max(30),
     duration: Joi.number().required().min(2),
@@ -37,10 +38,10 @@ router.post('/', celebrate({
 }), createMovie);
 
 // роутер удаления фильма, сохраненного пользователем
-router.delete('/:movieId', celebrate({
+router.delete('/:id', celebrate({
   // валидируем параметры
   params: Joi.object().keys({
-    movieId: Joi.string().required().hex().length(24),
+    id: Joi.string().required().hex().length(24),
   }),
 }), removeMovie);
 
