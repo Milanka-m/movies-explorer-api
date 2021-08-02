@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const {
   PORT, JWT_SECRET, MONGOOSE_DB_URL, NODE_ENV,
 } = process.env;
