@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const router = require('./routes/index');
 const { requestLogger, errorLogger } = require('./middlewares/Logger');
+const corsMiddlevare = require('./middlewares/cors');
 const notFound = require('./middlewares/notFound');
 const errorsHandler = require('./middlewares/errorsHandler');
 const { ENV_PORT, DB_URL, MONGOOSE_CONFIG } = require('./utils/config');
@@ -25,6 +26,7 @@ async function start() {
 
 app.use(requestLogger); // подключаем логгер запросов
 app.use(limiter);
+app.use(corsMiddlevare);
 
 app.use(router);
 
