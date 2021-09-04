@@ -14,12 +14,12 @@ router.get('/', findMovies);
 // роутер записи (создания объекта) фильма
 router.post('/', celebrate({
   body: Joi.object().keys({
-    movieId: Joi.number().required().min(1),
-    country: Joi.string().required().min(2).max(30),
-    director: Joi.string().required().min(2).max(30),
-    duration: Joi.number().required().min(2),
-    year: Joi.string().required().min(4).max(4),
-    description: Joi.string().required().min(2).max(200),
+    movieId: Joi.number().required(),
+    country: Joi.string().required(),
+    director: Joi.string().required(),
+    duration: Joi.number().required(),
+    year: Joi.string().required(),
+    description: Joi.string().required(),
     image:
     Joi.string()
       .required()
@@ -32,8 +32,8 @@ router.post('/', celebrate({
     Joi.string()
       .required()
       .pattern(/^((ftp|http|https):\/\/)?(www\.)?([A-Za-zА-Яа-я0-9]{1}[A-Za-zА-Яа-я0-9-]*\.?)*\.{1}[A-Za-zА-Яа-я0-9-]{2,8}(\/([\w#!:.?+=&%@!\-/])*)?/),
-    nameRU: Joi.string().required().min(2).max(50),
-    nameEN: Joi.string().required().min(2).max(50),
+    nameRU: Joi.string().required(),
+    nameEN: Joi.string().required(),
   }),
 }), createMovie);
 
