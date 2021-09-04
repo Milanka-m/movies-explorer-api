@@ -1,5 +1,5 @@
 # Проект movies-explorer бэкенд
 
-Публичный IP: 178.154.221.146
+Публичный IP: 62.84.113.121
 
 Домен: http://api.movies-explorer-22.nomoredomains.club
