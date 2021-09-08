@@ -24,7 +24,7 @@
 #### `POST /movies`
 создаёт фильм с переданными в теле `movieId, country, director, duration, year, description, image, trailer, thumbnail, nameRU, nameEN,` - **роут защищен авторизацией**
 
-#### `DELETE /articles/articleId`
+#### `DELETE /movies/id`
 удаляет сохранённый фильм по `id` - **роут защищен авторизацией**
 
 ## 👨🏻‍💻 JavaScript, 🚂 Express
